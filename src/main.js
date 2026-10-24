@@ -3,12 +3,12 @@ import "./style.css";
 
 // Themes: Each color swatch has its own dice colors
 const PROFILES = {
-  crimson:   { custom: { background: "#991b1b", foreground: "#ffffff", material: "plastic" } },
-  emerald:   { custom: { background: "#1b7a43", foreground: "#ffffff", material: "plastic" } },
-  purple:    { custom: { background: "#6b21a8", foreground: "#ffffff", material: "plastic" } },
-  bloodmoon: { colorset: "bloodmoon" },
-  ice:       { colorset: "ice" },
-  psychic:   { colorset: "psychic" }
+  crimson:   { label: "Crimson",   swatch: "#991b1b", custom: { background: "#991b1b", foreground: "#ffffff", material: "plastic" } },
+  emerald:   { label: "Emerald",   swatch: "#1b7a43", custom: { background: "#1b7a43", foreground: "#ffffff", material: "plastic" } },
+  purple:    { label: "Purple",    swatch: "#6b21a8", custom: { background: "#6b21a8", foreground: "#ffffff", material: "plastic" } },
+  bloodmoon: { label: "Bloodmoon", swatch: "radial-gradient(circle, #eab308, #7f1d1d)", colorset: "bloodmoon" },
+  ice:       { label: "Ice",       swatch: "radial-gradient(circle, #e0f2fe, #0284c7)", colorset: "ice" },
+  psychic:   { label: "Psychic",   swatch: "radial-gradient(circle, #f472b6, #4c1d95)", colorset: "psychic" }
 };
 
 let currentProfile = PROFILES.crimson;
@@ -72,28 +72,55 @@ document.getElementById("clear-btn").addEventListener("click", () => {
 });
 
 // Theme selector
-document.querySelectorAll(".swatch").forEach((swatch) => {
-  swatch.addEventListener("click", () => {
-    document.querySelectorAll(".swatch").forEach(s => s.classList.remove("active"));
-    swatch.classList.add("active");
-    
-    currentProfile = PROFILES[swatch.dataset.theme];
+// Drawer Open / Close Controls
+const drawerEl = document.getElementById("dice-drawer");
+const backdropEl = document.getElementById("drawer-backdrop");
 
-    if (currentProfile.custom) {
-      // Apply custom solid color
-      box.updateConfig({
-        theme_colorset: "custom",
-        theme_customColorset: currentProfile.custom
-      });
-    } else {
-      // Apply built-in fantasy theme (and clear custom override)
-      box.updateConfig({
-        theme_colorset: currentProfile.colorset,
-        theme_customColorset: null
-      });
-    }
+function toggleDrawer(open) {
+  drawerEl.classList.toggle("open", open);
+  backdropEl.classList.toggle("hidden", !open);
+}
+
+document.getElementById("dice-drawer-btn").addEventListener("click", () => toggleDrawer(true));
+document.getElementById("close-drawer-btn").addEventListener("click", () => toggleDrawer(false));
+backdropEl.addEventListener("click", () => toggleDrawer(false));
+
+// Click a Dice Theme inside the Drawer
+document.querySelectorAll(".swatch-item").forEach((item) => {
+  item.addEventListener("click", () => {
+    applyTheme(item.dataset.theme);
+    toggleDrawer(false);
   });
 });
+
+// Helper to switch the visual 3D dice theme & update the top-left button
+function applyTheme(themeKey) {
+  if (!themeKey || themeKey === "active" || !PROFILES[themeKey]) return;
+
+  currentProfile = PROFILES[themeKey];
+
+  // Update highlight inside the drawer
+  document.querySelectorAll(".swatch-item").forEach((item) => {
+    item.classList.toggle("active", item.dataset.theme === themeKey);
+  });
+
+  // Update the Top-Left Button Dot & Name
+  document.getElementById("active-dice-dot").style.background = currentProfile.swatch;
+  document.getElementById("active-dice-name").textContent = currentProfile.label;
+
+  // Tell DiceBox to change the 3D dice colors/textures
+  if (currentProfile.custom) {
+    box.updateConfig({
+      theme_colorset: "custom",
+      theme_customColorset: currentProfile.custom
+    });
+  } else {
+    box.updateConfig({
+      theme_colorset: currentProfile.colorset,
+      theme_customColorset: null
+    });
+  }
+}
 
 // Execute the roll
 async function executeFormulaRoll(formulaStr, label = "", themeKey = "active") {
@@ -218,31 +245,6 @@ document.getElementById("add-preset-btn").addEventListener("click", () => {
 document.getElementById("cancel-preset-btn").addEventListener("click", () => {
   document.getElementById("preset-modal").classList.add("hidden");
 });
-
-// Helper to switch the visual 3D dice theme
-function applyTheme(themeKey) {
-  if (!themeKey || themeKey === "active" || !PROFILES[themeKey]) return;
-
-  currentProfile = PROFILES[themeKey];
-
-  // Update the visual highlight on the top-left swatches
-  document.querySelectorAll(".swatch").forEach((s) => {
-    s.classList.toggle("active", s.dataset.theme === themeKey);
-  });
-
-  // Tell DiceBox to change the 3D dice colors/textures
-  if (currentProfile.custom) {
-    box.updateConfig({
-      theme_colorset: "custom",
-      theme_customColorset: currentProfile.custom
-    });
-  } else {
-    box.updateConfig({
-      theme_colorset: currentProfile.colorset,
-      theme_customColorset: null
-    });
-  }
-}
 
 // Render presets on startup
 saveAndRenderPresets();

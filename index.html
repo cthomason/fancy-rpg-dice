@@ -11,20 +11,51 @@
   <div id="dice-canvas"></div>
 
   <!-- Top bar theme switcher and clear button -->
-  <header class="hud-top">
-    <div class="theme-picker">
-        <!-- 3 Solid Colors -->
-        <button class="swatch active" data-theme="crimson" style="background: #991b1b;" title="Crimson"></button>
-        <button class="swatch" data-theme="emerald" style="background: #1b7a43;" title="Emerald"></button>
-        <button class="swatch" data-theme="purple" style="background: #6b21a8;" title="Purple"></button>
+    <header class="hud-top">
+      <button id="dice-drawer-btn" class="hud-btn-secondary dice-bag-btn">
+        <span id="active-dice-dot" class="swatch-dot" style="background: #991b1b;"></span>
+        <span id="active-dice-name">Crimson</span>
+        <span style="opacity: 0.6; font-size: 0.75rem;">▼</span>
+      </button>
 
-        <!-- 3 Built-In Fantasy Themes -->
-        <button class="swatch" data-theme="bloodmoon" style="background: radial-gradient(circle, #eab308, #7f1d1d);" title="Bloodmoon"></button>
-        <button class="swatch" data-theme="ice" style="background: radial-gradient(circle, #e0f2fe, #0284c7);" title="Ice"></button>
-        <button class="swatch" data-theme="psychic" style="background: radial-gradient(circle, #f472b6, #4c1d95);" title="Psychic"></button>
-    </div>
-    <button id="clear-btn" class="hud-btn-secondary">Clear</button>
-  </header>
+      <button id="clear-btn" class="hud-btn-secondary">Clear</button>
+    </header>
+
+    <!-- Left Slide-Out Dice Drawer (Single Column) -->
+    <div id="drawer-backdrop" class="drawer-backdrop hidden"></div>
+    <aside id="dice-drawer" class="dice-drawer">
+      <div class="drawer-header">
+        <h2>Dice Bag</h2>
+        <button id="close-drawer-btn" class="icon-btn">&times;</button>
+      </div>
+
+      <div class="dice-list">
+        <button class="swatch-item active" data-theme="crimson">
+          <span class="swatch-dot" style="background: #991b1b;"></span>
+          <span class="swatch-name">Crimson</span>
+        </button>
+        <button class="swatch-item" data-theme="emerald">
+          <span class="swatch-dot" style="background: #1b7a43;"></span>
+          <span class="swatch-name">Emerald</span>
+        </button>
+        <button class="swatch-item" data-theme="purple">
+          <span class="swatch-dot" style="background: #6b21a8;"></span>
+          <span class="swatch-name">Purple</span>
+        </button>
+        <button class="swatch-item" data-theme="bloodmoon">
+          <span class="swatch-dot" style="background: radial-gradient(circle, #eab308, #7f1d1d);"></span>
+          <span class="swatch-name">Bloodmoon</span>
+        </button>
+        <button class="swatch-item" data-theme="ice">
+          <span class="swatch-dot" style="background: radial-gradient(circle, #e0f2fe, #0284c7);"></span>
+          <span class="swatch-name">Ice</span>
+        </button>
+        <button class="swatch-item" data-theme="psychic">
+          <span class="swatch-dot" style="background: radial-gradient(circle, #f472b6, #4c1d95);"></span>
+          <span class="swatch-name">Psychic</span>
+        </button>
+      </div>
+    </aside>
 
   <!-- Center-Top Result Banner (Hidden until roll finishes) -->
   <div id="result-banner" class="hud-result hidden">

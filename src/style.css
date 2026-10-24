@@ -35,16 +35,70 @@ html, body, #app {
   top: env(safe-area-inset-top, 20px); left: 20px; right: 20px;
   display: flex; justify-content: space-between; align-items: center;
 }
-.theme-picker {
-  display: flex; gap: 10px; background: rgba(30, 32, 38, 0.75);
-  padding: 8px 12px; border-radius: 30px;
-  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+/* Top-Left Dice Bag Trigger Button */
+.dice-bag-btn {
+  display: flex; align-items: center; gap: 10px;
+  color: #fff; font-size: 0.95rem;
 }
-.swatch {
-  width: 28px; height: 28px; border-radius: 50%;
-  border: 2px solid rgba(255,255,255,0.2); cursor: pointer;
+
+.swatch-dot {
+  width: 20px; height: 20px; border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  display: inline-block; flex-shrink: 0;
 }
-.swatch.active { border-color: #fff; transform: scale(1.15); }
+
+/* Drawer Backdrop */
+.drawer-backdrop {
+  position: absolute; inset: 0; z-index: 25;
+  background: rgba(0, 0, 0, 0.4);
+  transition: opacity 0.25s ease;
+}
+.drawer-backdrop.hidden { opacity: 0; pointer-events: none; }
+
+/* Narrow Single-Column Left Drawer */
+.dice-drawer {
+  position: absolute; top: 0; left: 0; bottom: 0;
+  width: 220px; max-width: 75vw; z-index: 30;
+  background: rgba(24, 26, 32, 0.94);
+  backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+  border-right: 1px solid rgba(255, 255, 255, 0.12);
+  padding: calc(env(safe-area-inset-top, 20px) + 10px) 14px calc(env(safe-area-inset-bottom, 20px) + 10px);
+  display: flex; flex-direction: column; gap: 14px; color: #fff;
+  transform: translateX(-100%);
+  transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.dice-drawer.open { transform: translateX(0); }
+
+.drawer-header {
+  display: flex; justify-content: space-between; align-items: center;
+  padding-bottom: 8px; border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+.drawer-header h2 { margin: 0; font-size: 1.1rem; font-weight: 800; }
+.icon-btn {
+  background: none; border: none; color: #aaa; font-size: 1.6rem;
+  line-height: 1; cursor: pointer; padding: 0 4px;
+}
+
+/* Single-Column List of Dice */
+.dice-list {
+  display: flex; flex-direction: column; gap: 8px;
+  overflow-y: auto; touch-action: pan-y;
+}
+
+.swatch-item {
+  display: flex; align-items: center; gap: 12px;
+  width: 100%; padding: 10px 12px; border-radius: 12px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #eee; font-size: 0.95rem; font-weight: 600;
+  cursor: pointer; text-align: left;
+  transition: transform 0.1s, background 0.15s, border-color 0.15s;
+}
+.swatch-item:active { transform: scale(0.97); }
+.swatch-item.active {
+  background: rgba(59, 130, 246, 0.25);
+  border-color: #3b82f6; color: #fff;
+}
 
 .hud-btn-secondary {
   background: rgba(30, 32, 38, 0.75); color: #ccc; border: 1px solid rgba(255,255,255,0.1);
