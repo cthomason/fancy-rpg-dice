@@ -18,29 +18,39 @@
         <span style="opacity: 0.6; font-size: 0.75rem;">▼</span>
       </button>
 
-      <button id="clear-btn" class="hud-btn-secondary">Clear</button>
+      <div style="display: flex; gap: 8px; align-items: center;">
+        <button id="presets-drawer-btn" class="hud-btn-secondary">⚡ Presets</button>
+        <button id="clear-btn" class="hud-btn-secondary">Clear</button>
+      </div>
     </header>
 
-    <!-- Left Slide-Out Dice Drawer (Single Column) -->
+    <!-- Shared Backdrop for Both Drawers -->
     <div id="drawer-backdrop" class="drawer-backdrop hidden"></div>
+
+    <!-- Left Slide-Out Dice Drawer -->
     <aside id="dice-drawer" class="dice-drawer">
       <div class="drawer-header">
         <h2>Dice Bag</h2>
         <button id="close-drawer-btn" class="icon-btn">&times;</button>
       </div>
-
       <div id="dice-list" class="dice-list"></div>
+    </aside>
+
+    <!-- Right Slide-Out Presets Drawer -->
+    <aside id="presets-drawer" class="presets-drawer">
+      <div class="drawer-header">
+        <h2>Saved Rolls</h2>
+        <button id="close-presets-btn" class="icon-btn">&times;</button>
+      </div>
+
+      <button id="add-preset-btn" class="preset-add-btn">+ New Preset</button>
+      <div id="presets-list" class="presets-list"></div>
     </aside>
 
   <!-- Center-Top Result Banner (Hidden until roll finishes) -->
   <div id="result-banner" class="hud-result hidden">
     <div id="result-total">20</div>
     <div id="result-breakdown">d20: 20</div>
-  </div>
-  <!-- Saved Roll Presets Bar -->
-  <div id="presets-bar" class="hud-presets">
-    <div id="presets-list" class="presets-list"></div>
-    <button id="add-preset-btn" class="preset-add-btn">+ Preset</button>
   </div>
 
   <!-- Simple Pop-up Modal to Create a New Preset -->

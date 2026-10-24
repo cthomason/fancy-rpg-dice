@@ -2,12 +2,11 @@ import DiceBox from "@3d-dice/dice-box-threejs";
 import "./style.css";
 
 // Themes: Each color swatch has its own dice colors
-// HACK: just hard code everything for now
 const PROFILES = {
   // --- Custom Solid Colors ---
   crimson:      { label: "Crimson",        swatch: "#991b1b", custom: { background: "#991b1b", foreground: "#ffffff", outline: "#991b1b", texture: "none", material: "plastic" } },
   emerald:      { label: "Emerald",        swatch: "#1b7a43", custom: { background: "#1b7a43", foreground: "#ffffff", outline: "#1b7a43", texture: "none", material: "plastic" } },
-  purple:       { label: "Royal Purple",         swatch: "#6b21a8", custom: { background: "#6b21a8", foreground: "#ffffff", outline: "#6b21a8", texture: "none", material: "plastic" } },
+  purple:       { label: "Royal Purple",   swatch: "#6b21a8", custom: { background: "#6b21a8", foreground: "#ffffff", outline: "#6b21a8", texture: "none", material: "plastic" } },
 
   // --- RPG Damage & Elemental Themes ---
   radiant:      { label: "Radiant",        swatch: "radial-gradient(circle, #ffffff, #F9B333)", colorset: "radiant" },
@@ -28,7 +27,7 @@ const PROFILES = {
   // --- Fantasy & Special Themes ---
   bloodmoon:    { label: "Blood Moon",     swatch: "radial-gradient(circle, #eab308, #7f1d1d)", colorset: "bloodmoon" },
   astralsea:    { label: "Astral Sea",     swatch: "radial-gradient(circle, #e2e8f0, #334155)", colorset: "astralsea" },
-  starynight:   { label: "Starry Night",   swatch: "radial-gradient(circle, #4F708F, #091636)", colorset: "starynight" }, // Note: single 'r' in library
+  starynight:   { label: "Starry Night",   swatch: "radial-gradient(circle, #4F708F, #091636)", colorset: "starynight" },
   bronze:       { label: "Thylean Bronze", swatch: "radial-gradient(circle, #FFB066, #9a3412)", colorset: "bronze" },
   dragons:      { label: "Dragons",        swatch: "radial-gradient(circle, #FFC000, #B80000)", colorset: "dragons" },
   inspired:     { label: "Inspired",       swatch: "radial-gradient(circle, #FFD700, #C4C4B6)", colorset: "inspired" },
@@ -70,7 +69,7 @@ document.querySelectorAll(".die-btn").forEach((btn) => {
   });
 });
 
-
+// Roll Button
 document.getElementById("roll-btn").addEventListener("click", async () => {
   const entries = Object.entries(dicePool);
   if (entries.length === 0) {
@@ -78,7 +77,6 @@ document.getElementById("roll-btn").addEventListener("click", async () => {
     entries.push(["20", 1]);
   }
 
-  // Turn entries like [["20", 1], ["6", 2]] into ["1d20", "2d6"]
   const notationParts = [];
   for (const [sides, count] of entries) {
     notationParts.push(`${count}d${sides}`);
@@ -104,45 +102,64 @@ document.getElementById("clear-btn").addEventListener("click", () => {
   box.clearDice();
 });
 
-// Theme selector
-// Drawer Open / Close Controls
-const drawerEl = document.getElementById("dice-drawer");
+// Drawer Open / Close Controls (Left Dice Drawer & Right Presets Drawer)
+const diceDrawerEl = document.getElementById("dice-drawer");
+const presetsDrawerEl = document.getElementById("presets-drawer");
 const backdropEl = document.getElementById("drawer-backdrop");
 
+function closeAllDrawers() {
+  diceDrawerEl.classList.remove("open");
+  presetsDrawerEl.classList.remove("open");
+  backdropEl.classList.add("hidden");
+}
+
 function toggleDrawer(open) {
-  drawerEl.classList.toggle("open", open);
+  presetsDrawerEl.classList.remove("open");
+  diceDrawerEl.classList.toggle("open", open);
+  backdropEl.classList.toggle("hidden", !open);
+}
+
+function togglePresetsDrawer(open) {
+  diceDrawerEl.classList.remove("open");
+  presetsDrawerEl.classList.toggle("open", open);
   backdropEl.classList.toggle("hidden", !open);
 }
 
 document.getElementById("dice-drawer-btn").addEventListener("click", () => toggleDrawer(true));
-document.getElementById("close-drawer-btn").addEventListener("click", () => toggleDrawer(false));
-backdropEl.addEventListener("click", () => toggleDrawer(false));
+document.getElementById("close-drawer-btn").addEventListener("click", closeAllDrawers);
 
-// Auto-populate the Left Drawer AND the Preset Modal Dropdown from PROFILES
+document.getElementById("presets-drawer-btn").addEventListener("click", () => togglePresetsDrawer(true));
+document.getElementById("close-presets-btn").addEventListener("click", closeAllDrawers);
+
+backdropEl.addEventListener("click", closeAllDrawers);
+
+// RESTORED: Auto-populate the Left Dice Drawer AND the Preset Modal Dropdown from PROFILES
 const diceListEl = document.getElementById("dice-list");
 const presetThemeSelect = document.getElementById("preset-theme");
 
+if (diceListEl) diceListEl.innerHTML = "";
+
 for (const [key, profile] of Object.entries(PROFILES)) {
-  // Add button to the Left Dice Drawer
-  const btn = document.createElement("button");
-  btn.className = `swatch-item ${key === "crimson" ? "active" : ""}`;
-  btn.dataset.theme = key;
-  btn.innerHTML = `
-    <span class="swatch-dot" style="background: ${profile.swatch};"></span>
-    <span class="swatch-name">${profile.label}</span>
-  `;
-  btn.addEventListener("click", () => {
-    applyTheme(key);
-    toggleDrawer(false);
-  });
-  diceListEl.appendChild(btn);
+    // Add button to the Left Dice Drawer
+    const btn = document.createElement("button");
+    btn.className = `swatch-item ${key === "crimson" ? "active" : ""}`;
+    btn.dataset.theme = key;
+    btn.innerHTML = `
+      <span class="swatch-dot" style="background: ${profile.swatch};"></span>
+      <span class="swatch-name">${profile.label}</span>
+    `;
+    btn.addEventListener("click", () => {
+      applyTheme(key);
+      closeAllDrawers();
+    });
+    diceListEl.appendChild(btn);
+  }
 
   // Add option to the New Preset Modal <select>
-  const opt = document.createElement("option");
-  opt.value = key;
-  opt.textContent = `${profile.label} Dice`;
-  presetThemeSelect.appendChild(opt);
-}
+    const opt = document.createElement("option");
+    opt.value = key;
+    opt.textContent = `${profile.label} Dice`;
+    presetThemeSelect.appendChild(opt);
 
 // Helper to switch the visual 3D dice theme & update the top-left button
 async function applyTheme(themeKey) {
@@ -150,14 +167,14 @@ async function applyTheme(themeKey) {
 
   currentProfile = PROFILES[themeKey];
 
-  // Update highlight inside the drawer
   document.querySelectorAll(".swatch-item").forEach((item) => {
     item.classList.toggle("active", item.dataset.theme === themeKey);
   });
 
-  // Update the Top-Left Button Dot & Name
-  document.getElementById("active-dice-dot").style.background = currentProfile.swatch;
-  document.getElementById("active-dice-name").textContent = currentProfile.label;
+  const dotEl = document.getElementById("active-dice-dot");
+  const nameEl = document.getElementById("active-dice-name");
+  if (dotEl) dotEl.style.background = currentProfile.swatch;
+  if (nameEl) nameEl.textContent = currentProfile.label;
 
   // Wait for DiceBox to finish loading & applying the new colors/textures!
   if (currentProfile.custom) {
@@ -237,16 +254,19 @@ function saveAndRenderPresets() {
     const chip = document.createElement("div");
     chip.className = "preset-chip";
     
-    // Show a tiny colored dot if a specific dice theme is bound to this preset
     const dotHtml = (preset.theme && PROFILES[preset.theme])
       ? `<span class="preset-dot" style="background: ${PROFILES[preset.theme].swatch}"></span>`
-      : "";
+      : `<span class="preset-dot" style="border: 1px solid #555;"></span>`;
 
     chip.innerHTML = `
-      ${dotHtml}
-      <span>${preset.name}</span>
-      <span class="formula-tag">${preset.formula}</span>
-      <span class="delete-preset" data-index="${index}" title="Delete">&times;</span>
+      <div class="preset-chip-left">
+        ${dotHtml}
+        <span>${preset.name}</span>
+      </div>
+      <div class="preset-chip-right">
+        <span class="formula-tag">${preset.formula}</span>
+        <span class="delete-preset" data-index="${index}" title="Delete">&times;</span>
+      </div>
     `;
 
     chip.addEventListener("click", (e) => {
@@ -255,6 +275,7 @@ function saveAndRenderPresets() {
         saveAndRenderPresets();
         return;
       }
+      closeAllDrawers();
       executeFormulaRoll(preset.formula, preset.name, preset.theme);
     });
 
@@ -277,7 +298,7 @@ document.getElementById("save-preset-btn").addEventListener("click", () => {
   }
 });
 
-// Modal Open / Close / Save
+// Modal Open / Close
 document.getElementById("add-preset-btn").addEventListener("click", () => {
   document.getElementById("preset-modal").classList.remove("hidden");
   document.getElementById("preset-name").focus();

@@ -11,7 +11,7 @@ html, body, #app {
 #dice-canvas {
   position: absolute;
   top: calc(env(safe-area-inset-top, 20px) + 56px);
-  bottom: calc(env(safe-area-inset-bottom, 24px) + 140px);
+  bottom: calc(env(safe-area-inset-bottom, 24px) + 96px);
   left: 0;
   right: 0;
   z-index: 1;
@@ -152,43 +152,58 @@ html, body, #app {
 }
 .roll-action-btn:active { transform: scale(0.95); background: #2563eb; }
 
-/* Saved Presets Bar (Floats right above the bottom dock) */
-.hud-presets {
-  position: absolute; z-index: 10;
-  bottom: calc(env(safe-area-inset-bottom, 24px) + 88px);
-  left: 50%; transform: translateX(-50%);
-  display: flex; align-items: center; gap: 8px;
-  max-width: 92vw; pointer-events: auto;
+/* Right Slide-Out Presets Drawer */
+.presets-drawer {
+  position: absolute; top: 0; right: 0; bottom: 0;
+  width: 280px; max-width: 82vw; z-index: 30;
+  background: rgba(24, 26, 32, 0.94);
+  backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+  border-left: 1px solid rgba(255, 255, 255, 0.12);
+  padding: calc(env(safe-area-inset-top, 20px) + 10px) 14px calc(env(safe-area-inset-bottom, 20px) + 10px);
+  display: flex; flex-direction: column; gap: 12px; color: #fff;
+  transform: translateX(100%); /* Tucked off the right edge */
+  transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
-
-.presets-list {
-  display: flex; gap: 8px; overflow-x: auto;
-  padding: 4px; scrollbar-width: none;
-  touch-action: pan-x; /* Allows horizontal thumb-swiping on iPad */
-}
-.presets-list::-webkit-scrollbar { display: none; }
-
-.preset-chip {
-  display: flex; align-items: center; gap: 8px;
-  background: rgba(30, 32, 38, 0.85);
-  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.15); color: #fff;
-  padding: 8px 14px; border-radius: 18px; white-space: nowrap;
-  font-size: 0.9rem; font-weight: 600; cursor: pointer;
-}
-.preset-chip:active { transform: scale(0.95); background: rgba(59, 130, 246, 0.4); }
-.preset-chip .formula-tag { color: #f5c542; font-weight: 700; font-size: 0.8rem; }
-.preset-chip .delete-preset {
-  color: #888; font-size: 1rem; padding-left: 4px; line-height: 1;
-}
-.preset-chip .delete-preset:hover { color: #ef4444; }
+.presets-drawer.open { transform: translateX(0); }
 
 .preset-add-btn {
-  background: rgba(59, 130, 246, 0.85); color: #fff; border: none;
-  padding: 8px 14px; border-radius: 18px; font-weight: 700;
-  font-size: 0.85rem; white-space: nowrap; cursor: pointer;
-  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  width: 100%; padding: 10px 14px; border-radius: 12px;
+  background: #3b82f6; color: #fff; border: none;
+  font-weight: 700; font-size: 0.9rem; cursor: pointer;
 }
+.preset-add-btn:active { transform: scale(0.97); background: #2563eb; }
+
+/* Vertical Scrollable List of Presets */
+.presets-list {
+  flex: 1; display: flex; flex-direction: column; gap: 8px;
+  overflow-y: auto; touch-action: pan-y;
+}
+
+.preset-chip {
+  display: flex; justify-content: space-between; align-items: center;
+  width: 100%; padding: 10px 12px; border-radius: 12px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #fff; font-size: 0.92rem; font-weight: 600; cursor: pointer;
+  transition: transform 0.1s, background 0.15s;
+}
+.preset-chip:active { transform: scale(0.97); background: rgba(59, 130, 246, 0.3); }
+
+.preset-chip-left {
+  display: flex; align-items: center; gap: 10px;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.preset-chip-right {
+  display: flex; align-items: center; gap: 8px; flex-shrink: 0;
+}
+.preset-chip .formula-tag {
+  background: rgba(245, 197, 66, 0.15); color: #f5c542;
+  padding: 3px 7px; border-radius: 6px; font-weight: 700; font-size: 0.8rem;
+}
+.preset-chip .delete-preset {
+  color: #888; font-size: 1.2rem; padding: 0 4px; line-height: 1;
+}
+.preset-chip .delete-preset:hover { color: #ef4444; }
 
 /* Modal for Adding Presets */
 .modal-overlay {
@@ -311,6 +326,6 @@ html, body, #app {
   /* Keep dice between the top bar and taller 2-row mobile dock */
   #dice-canvas {
     top: calc(env(safe-area-inset-top, 12px) + 52px);
-    bottom: calc(env(safe-area-inset-bottom, 12px) + 180px);
+    bottom: calc(env(safe-area-inset-bottom, 12px) + 136px);
   }
 }
