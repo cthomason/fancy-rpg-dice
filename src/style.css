@@ -7,10 +7,20 @@ html, body, #app {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 
-/* 3D Dice Layer */
-#dice-canvas, #dice-canvas canvas {
-  position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+/* 3D Dice Layer (Bounded between the top bar and bottom presets/dock) */
+#dice-canvas {
+  position: absolute;
+  top: calc(env(safe-area-inset-top, 20px) + 56px);
+  bottom: calc(env(safe-area-inset-bottom, 24px) + 140px);
+  left: 0;
+  right: 0;
   z-index: 1;
+}
+
+#dice-canvas canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
 }
 
 /* Shared HUD Overlay Styling */
@@ -161,7 +171,7 @@ html, body, #app {
     height: 100dvh; /* Prevents mobile browser bars from cutting off the bottom */
   }
 
-  /* 1. Compact Top Bar so 6 Swatches + Clear Button fit comfortably */
+  /* Compact Top Bar so 6 Swatches + Clear Button fit comfortably */
   .hud-top {
     top: calc(env(safe-area-inset-top, 12px) + 8px);
     left: 12px;
@@ -180,7 +190,7 @@ html, body, #app {
     font-size: 0.85rem;
   }
 
-  /* 2. Slightly more compact Result Banner */
+  /* Slightly more compact Result Banner */
   .hud-result {
     top: calc(env(safe-area-inset-top, 12px) + 62px);
     padding: 10px 22px;
@@ -196,7 +206,7 @@ html, body, #app {
     word-break: break-word;
   }
 
-  /* 3. Stack Bottom Dock: 7 Dice on Row 1, Full-Width ROLL Button on Row 2 */
+  /* Stack Bottom Dock: 7 Dice on Row 1, Full-Width ROLL Button on Row 2 */
   .hud-bottom {
     bottom: calc(env(safe-area-inset-bottom, 12px) + 8px);
     width: calc(100vw - 24px);
@@ -232,7 +242,7 @@ html, body, #app {
     font-size: 1rem;
   }
 
-  /* 4. Lift the Presets Bar above the 2-row mobile dock */
+  /* Lift the Presets Bar above the 2-row mobile dock */
   .hud-presets {
     bottom: calc(env(safe-area-inset-bottom, 12px) + 132px);
     width: calc(100vw - 24px);
@@ -242,5 +252,11 @@ html, body, #app {
   .preset-chip {
     padding: 7px 12px;
     font-size: 0.82rem;
+  }
+
+  /* Keep dice between the top bar and taller 2-row mobile dock */
+  #dice-canvas {
+    top: calc(env(safe-area-inset-top, 12px) + 52px);
+    bottom: calc(env(safe-area-inset-bottom, 12px) + 180px);
   }
 }
