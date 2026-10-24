@@ -1,0 +1,81 @@
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Dice" />
+    <link rel="icon" type="image/svg+xml" href="/icon.svg" />
+    <link rel="apple-touch-icon" href="/icon.svg" />
+</head>
+<div id="app">
+  <!-- 3D Canvas Container (Full Screen) -->
+  <div id="dice-canvas"></div>
+
+  <!-- Top bar theme switcher and clear button -->
+  <header class="hud-top">
+    <div class="theme-picker">
+        <!-- 3 Solid Colors -->
+        <button class="swatch active" data-theme="crimson" style="background: #991b1b;" title="Crimson"></button>
+        <button class="swatch" data-theme="emerald" style="background: #1b7a43;" title="Emerald"></button>
+        <button class="swatch" data-theme="purple" style="background: #6b21a8;" title="Purple"></button>
+
+        <!-- 3 Built-In Fantasy Themes -->
+        <button class="swatch" data-theme="bloodmoon" style="background: radial-gradient(circle, #eab308, #7f1d1d);" title="Bloodmoon"></button>
+        <button class="swatch" data-theme="ice" style="background: radial-gradient(circle, #e0f2fe, #0284c7);" title="Ice"></button>
+        <button class="swatch" data-theme="psychic" style="background: radial-gradient(circle, #f472b6, #4c1d95);" title="Psychic"></button>
+    </div>
+    <button id="clear-btn" class="hud-btn-secondary">Clear</button>
+  </header>
+
+  <!-- Center-Top Result Banner (Hidden until roll finishes) -->
+  <div id="result-banner" class="hud-result hidden">
+    <div id="result-total">20</div>
+    <div id="result-breakdown">d20: 20</div>
+  </div>
+  <!-- Saved Roll Presets Bar -->
+  <div id="presets-bar" class="hud-presets">
+    <div id="presets-list" class="presets-list"></div>
+    <button id="add-preset-btn" class="preset-add-btn">+ Preset</button>
+  </div>
+
+  <!-- Simple Pop-up Modal to Create a New Preset -->
+  <div id="preset-modal" class="modal-overlay hidden">
+    <div class="modal-card">
+      <h3>New Roll Preset</h3>
+      <input id="preset-name" type="text" placeholder="Name (e.g. Greatsword, Fireball)" />
+      <input id="preset-formula" type="text" placeholder="Formula (e.g. 2d6+5 or 1d20+7)" />
+      
+      <!-- Pick which dice theme this preset uses! -->
+      <select id="preset-theme">
+        <option value="active">Use Currently Selected Dice</option>
+        <option value="crimson">Crimson Dice</option>
+        <option value="emerald">Emerald Dice</option>
+        <option value="purple">Purple Dice</option>
+        <option value="bloodmoon">Bloodmoon Dice</option>
+        <option value="ice">Ice Dice</option>
+        <option value="psychic">Psychic Dice</option>
+      </select>
+
+      <div class="modal-actions">
+        <button id="cancel-preset-btn" class="hud-btn-secondary">Cancel</button>
+        <button id="save-preset-btn" class="roll-action-btn" style="height: 42px; font-size: 0.95rem;">Save</button>
+      </div>
+    </div>
+  </div>
+    
+  </div>
+  <!-- Bottom Dock: Tap Dice to Build Pool -->
+  <footer class="hud-bottom">
+    <div class="dice-dock">
+      <!-- The hidden zero is the counter for how many dice to roll -->
+      <button class="die-btn" data-sides="4">d4<span class="badge hidden">0</span></button>
+      <button class="die-btn" data-sides="6">d6<span class="badge hidden">0</span></button>
+      <button class="die-btn" data-sides="8">d8<span class="badge hidden">0</span></button>
+      <button class="die-btn" data-sides="10">d10<span class="badge hidden">0</span></button>
+      <button class="die-btn" data-sides="12">d12<span class="badge hidden">0</span></button>
+      <button class="die-btn" data-sides="20">d20<span class="badge hidden">0</span></button>
+      <button class="die-btn" data-sides="100">d100<span class="badge hidden">0</span></button>
+    </div>
+    <button id="roll-btn" class="roll-action-btn">ROLL</button>
+  </footer>
+</div>
+<script type="module" src="/src/main.js"></script> 

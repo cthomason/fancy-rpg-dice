@@ -1,0 +1,154 @@
+* { box-sizing: border-box; user-select: none; -webkit-user-select: none; }
+html, body, #app {
+  margin: 0; padding: 0; width: 100vw; height: 100vh;
+  overflow: hidden;
+  touch-action: none; /* Prevents iPadOS screen bounce and pinch-to-zoom */
+  background: radial-gradient(circle at center, #e2e8f0 0%, #94a3b8 100%);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+/* 3D Dice Layer */
+#dice-canvas, #dice-canvas canvas {
+  position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+  z-index: 1;
+}
+
+/* Shared HUD Overlay Styling */
+.hud-top, .hud-bottom, .hud-result {
+  position: absolute; z-index: 10;
+  pointer-events: none; /* Let taps pass through empty space to the canvas */
+}
+.hud-top *, .hud-bottom * { pointer-events: auto; }
+
+/* Top Bar */
+.hud-top {
+  top: env(safe-area-inset-top, 20px); left: 20px; right: 20px;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.theme-picker {
+  display: flex; gap: 10px; background: rgba(30, 32, 38, 0.75);
+  padding: 8px 12px; border-radius: 30px;
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+}
+.swatch {
+  width: 28px; height: 28px; border-radius: 50%;
+  border: 2px solid rgba(255,255,255,0.2); cursor: pointer;
+}
+.swatch.active { border-color: #fff; transform: scale(1.15); }
+
+.hud-btn-secondary {
+  background: rgba(30, 32, 38, 0.75); color: #ccc; border: 1px solid rgba(255,255,255,0.1);
+  padding: 10px 18px; border-radius: 20px; font-weight: 600; cursor: pointer;
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+}
+
+/* Result Display */
+.hud-result {
+  top: 90px; left: 50%; transform: translateX(-50%);
+  background: rgba(20, 22, 26, 0.85);
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,0.15); border-radius: 20px;
+  padding: 12px 32px; text-align: center; color: #fff;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+.hud-result.hidden { opacity: 0; transform: translate(-50%, -10px); }
+#result-total { font-size: 3rem; font-weight: 800; line-height: 1; color: #f5c542; }
+#result-breakdown { font-size: 0.95rem; color: #aaa; margin-top: 6px; }
+
+/* Bottom Dice Dock */
+.hud-bottom {
+  bottom: env(safe-area-inset-bottom, 24px); left: 50%; transform: translateX(-50%);
+  display: flex; align-items: center; gap: 14px;
+  background: rgba(30, 32, 38, 0.8);
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  padding: 10px 14px; border-radius: 24px; border: 1px solid rgba(255,255,255,0.12);
+}
+.dice-dock { display: flex; gap: 8px; }
+
+.die-btn {
+  position: relative; width: 56px; height: 56px; border-radius: 16px;
+  background: rgba(255, 255, 255, 0.08); color: #fff;
+  border: 1px solid rgba(255,255,255,0.1); font-size: 1rem; font-weight: 700;
+  cursor: pointer; transition: transform 0.1s, background 0.15s;
+}
+.die-btn:active { transform: scale(0.92); background: rgba(255, 255, 255, 0.2); }
+
+.badge {
+  position: absolute; top: -6px; right: -6px;
+  background: #e63946; color: #fff; font-size: 0.75rem; font-weight: 800;
+  width: 22px; height: 22px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+}
+.badge.hidden { display: none; }
+
+.roll-action-btn {
+  height: 56px; padding: 0 28px; border-radius: 16px;
+  background: #3b82f6; color: #fff; border: none;
+  font-size: 1.1rem; font-weight: 800; letter-spacing: 0.5px; cursor: pointer;
+}
+.roll-action-btn:active { transform: scale(0.95); background: #2563eb; }
+
+/* Saved Presets Bar (Floats right above the bottom dock) */
+.hud-presets {
+  position: absolute; z-index: 10;
+  bottom: calc(env(safe-area-inset-bottom, 24px) + 88px);
+  left: 50%; transform: translateX(-50%);
+  display: flex; align-items: center; gap: 8px;
+  max-width: 92vw; pointer-events: auto;
+}
+
+.presets-list {
+  display: flex; gap: 8px; overflow-x: auto;
+  padding: 4px; scrollbar-width: none;
+  touch-action: pan-x; /* Allows horizontal thumb-swiping on iPad */
+}
+.presets-list::-webkit-scrollbar { display: none; }
+
+.preset-chip {
+  display: flex; align-items: center; gap: 8px;
+  background: rgba(30, 32, 38, 0.85);
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.15); color: #fff;
+  padding: 8px 14px; border-radius: 18px; white-space: nowrap;
+  font-size: 0.9rem; font-weight: 600; cursor: pointer;
+}
+.preset-chip:active { transform: scale(0.95); background: rgba(59, 130, 246, 0.4); }
+.preset-chip .formula-tag { color: #f5c542; font-weight: 700; font-size: 0.8rem; }
+.preset-chip .delete-preset {
+  color: #888; font-size: 1rem; padding-left: 4px; line-height: 1;
+}
+.preset-chip .delete-preset:hover { color: #ef4444; }
+
+.preset-add-btn {
+  background: rgba(59, 130, 246, 0.85); color: #fff; border: none;
+  padding: 8px 14px; border-radius: 18px; font-weight: 700;
+  font-size: 0.85rem; white-space: nowrap; cursor: pointer;
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+}
+
+/* Modal for Adding Presets */
+.modal-overlay {
+  position: absolute; inset: 0; z-index: 50;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
+  display: flex; align-items: center; justify-content: center;
+}
+.modal-overlay.hidden { display: none; }
+.modal-card {
+  background: #1e2026; border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 20px; padding: 20px; width: 320px; color: #fff;
+  display: flex; flex-direction: column; gap: 12px;
+}
+.modal-card h3 { margin: 0 0 4px 0; font-size: 1.1rem; }
+.modal-card input,
+.modal-card select {
+  background: #141619; border: 1px solid rgba(255,255,255,0.2);
+  color: #fff; padding: 10px 12px; border-radius: 10px; font-size: 0.95rem;
+  user-select: text; -webkit-user-select: text;
+}
+
+/* Tiny colored dot on the preset chip showing its assigned theme */
+.preset-dot {
+  width: 10px; height: 10px; border-radius: 50%; display: inline-block; flex-shrink: 0;
+}
+.modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 6px; }
