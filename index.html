@@ -29,32 +29,7 @@
         <button id="close-drawer-btn" class="icon-btn">&times;</button>
       </div>
 
-      <div class="dice-list">
-        <button class="swatch-item active" data-theme="crimson">
-          <span class="swatch-dot" style="background: #991b1b;"></span>
-          <span class="swatch-name">Crimson</span>
-        </button>
-        <button class="swatch-item" data-theme="emerald">
-          <span class="swatch-dot" style="background: #1b7a43;"></span>
-          <span class="swatch-name">Emerald</span>
-        </button>
-        <button class="swatch-item" data-theme="purple">
-          <span class="swatch-dot" style="background: #6b21a8;"></span>
-          <span class="swatch-name">Purple</span>
-        </button>
-        <button class="swatch-item" data-theme="bloodmoon">
-          <span class="swatch-dot" style="background: radial-gradient(circle, #eab308, #7f1d1d);"></span>
-          <span class="swatch-name">Bloodmoon</span>
-        </button>
-        <button class="swatch-item" data-theme="ice">
-          <span class="swatch-dot" style="background: radial-gradient(circle, #e0f2fe, #0284c7);"></span>
-          <span class="swatch-name">Ice</span>
-        </button>
-        <button class="swatch-item" data-theme="psychic">
-          <span class="swatch-dot" style="background: radial-gradient(circle, #f472b6, #4c1d95);"></span>
-          <span class="swatch-name">Psychic</span>
-        </button>
-      </div>
+      <div id="dice-list" class="dice-list"></div>
     </aside>
 
   <!-- Center-Top Result Banner (Hidden until roll finishes) -->
@@ -78,12 +53,6 @@
       <!-- Pick which dice theme this preset uses! -->
       <select id="preset-theme">
         <option value="active">Use Currently Selected Dice</option>
-        <option value="crimson">Crimson Dice</option>
-        <option value="emerald">Emerald Dice</option>
-        <option value="purple">Purple Dice</option>
-        <option value="bloodmoon">Bloodmoon Dice</option>
-        <option value="ice">Ice Dice</option>
-        <option value="psychic">Psychic Dice</option>
       </select>
 
       <div class="modal-actions">
