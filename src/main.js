@@ -220,16 +220,6 @@ async function executeFormulaRoll(formulaStr, label = "", themeKey = "active") {
 // Saved presets manager
 const STORAGE_KEY = "fancy_rpg_dice_presets";
 
-// Color map for the tiny indicator dot on each preset chip
-// const DOT_COLORS = {
-//   crimson: "#991b1b",
-//   emerald: "#1b7a43",
-//   purple: "#6b21a8",
-//   bloodmoon: "#eab308",
-//   ice: "#38bdf8",
-//   psychic: "#f472b6"
-// };
-
 const defaultPresets = [
   { name: "Attack", formula: "1d20+7", theme: "emerald" },
   { name: "Greatsword", formula: "2d6+4", theme: "crimson" },
