@@ -3,9 +3,9 @@ import "./style.css";
 
 // Themes: Each color swatch has its own dice colors
 const PROFILES = {
-  crimson:   { label: "Crimson",   swatch: "#991b1b", custom: { background: "#991b1b", foreground: "#ffffff", material: "plastic" } },
-  emerald:   { label: "Emerald",   swatch: "#1b7a43", custom: { background: "#1b7a43", foreground: "#ffffff", material: "plastic" } },
-  purple:    { label: "Purple",    swatch: "#6b21a8", custom: { background: "#6b21a8", foreground: "#ffffff", material: "plastic" } },
+  crimson:   { label: "Crimson",   swatch: "#991b1b", custom: { background: "#991b1b", foreground: "#ffffff", outline: "#991b1b", texture: "none", material: "plastic" } },
+  emerald:   { label: "Emerald",   swatch: "#1b7a43", custom: { background: "#1b7a43", foreground: "#ffffff", outline: "#1b7a43", texture: "none", material: "plastic" } },
+  purple:    { label: "Purple",    swatch: "#6b21a8", custom: { background: "#6b21a8", foreground: "#ffffff", outline: "#6b21a8", texture: "none", material: "plastic" } },
   bloodmoon: { label: "Bloodmoon", swatch: "radial-gradient(circle, #eab308, #7f1d1d)", colorset: "bloodmoon" },
   ice:       { label: "Ice",       swatch: "radial-gradient(circle, #e0f2fe, #0284c7)", colorset: "ice" },
   psychic:   { label: "Psychic",   swatch: "radial-gradient(circle, #f472b6, #4c1d95)", colorset: "psychic" }
@@ -94,7 +94,7 @@ document.querySelectorAll(".swatch-item").forEach((item) => {
 });
 
 // Helper to switch the visual 3D dice theme & update the top-left button
-function applyTheme(themeKey) {
+async function applyTheme(themeKey) {
   if (!themeKey || themeKey === "active" || !PROFILES[themeKey]) return;
 
   currentProfile = PROFILES[themeKey];
@@ -108,14 +108,14 @@ function applyTheme(themeKey) {
   document.getElementById("active-dice-dot").style.background = currentProfile.swatch;
   document.getElementById("active-dice-name").textContent = currentProfile.label;
 
-  // Tell DiceBox to change the 3D dice colors/textures
+  // Wait for DiceBox to finish loading & applying the new colors/textures!
   if (currentProfile.custom) {
-    box.updateConfig({
-      theme_colorset: "custom",
+    await box.updateConfig({
+      theme_colorset: null,
       theme_customColorset: currentProfile.custom
     });
   } else {
-    box.updateConfig({
+    await box.updateConfig({
       theme_colorset: currentProfile.colorset,
       theme_customColorset: null
     });
@@ -125,7 +125,7 @@ function applyTheme(themeKey) {
 // Execute the roll
 async function executeFormulaRoll(formulaStr, label = "", themeKey = "active") {
   if (themeKey && themeKey !== "active") {
-    applyTheme(themeKey);
+    await applyTheme(themeKey); // <-- Wait for theme/textures to finish updating!
   }
 
   const cleanStr = formulaStr.replace(/\s+/g, "").toLowerCase();
