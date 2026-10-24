@@ -152,3 +152,95 @@ html, body, #app {
   width: 10px; height: 10px; border-radius: 50%; display: inline-block; flex-shrink: 0;
 }
 .modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 6px; }
+
+/* =========================================================
+   MOBILE PHONE RESPONSIVE LAYOUT (Screens under 640px wide)
+   ========================================================= */
+@media (max-width: 640px) {
+  html, body, #app {
+    height: 100dvh; /* Prevents mobile browser bars from cutting off the bottom */
+  }
+
+  /* 1. Compact Top Bar so 6 Swatches + Clear Button fit comfortably */
+  .hud-top {
+    top: calc(env(safe-area-inset-top, 12px) + 8px);
+    left: 12px;
+    right: 12px;
+  }
+  .theme-picker {
+    gap: 7px;
+    padding: 6px 10px;
+  }
+  .swatch {
+    width: 24px;
+    height: 24px;
+  }
+  .hud-btn-secondary {
+    padding: 8px 14px;
+    font-size: 0.85rem;
+  }
+
+  /* 2. Slightly more compact Result Banner */
+  .hud-result {
+    top: calc(env(safe-area-inset-top, 12px) + 62px);
+    padding: 10px 22px;
+    width: max-content;
+    max-width: 90vw;
+  }
+  #result-total {
+    font-size: 2.4rem;
+  }
+  #result-breakdown {
+    font-size: 0.85rem;
+    white-space: normal;
+    word-break: break-word;
+  }
+
+  /* 3. Stack Bottom Dock: 7 Dice on Row 1, Full-Width ROLL Button on Row 2 */
+  .hud-bottom {
+    bottom: calc(env(safe-area-inset-bottom, 12px) + 8px);
+    width: calc(100vw - 24px);
+    flex-direction: column;
+    gap: 8px;
+    padding: 10px;
+    border-radius: 20px;
+  }
+  .dice-dock {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 5px;
+  }
+  .die-btn {
+    width: 100%;
+    height: 46px;
+    border-radius: 12px;
+    font-size: 0.85rem;
+    padding: 0;
+  }
+  .badge {
+    width: 18px;
+    height: 18px;
+    font-size: 0.65rem;
+    top: -5px;
+    right: -4px;
+  }
+  .roll-action-btn {
+    width: 100%;
+    height: 46px;
+    border-radius: 12px;
+    font-size: 1rem;
+  }
+
+  /* 4. Lift the Presets Bar above the 2-row mobile dock */
+  .hud-presets {
+    bottom: calc(env(safe-area-inset-bottom, 12px) + 132px);
+    width: calc(100vw - 24px);
+    max-width: none;
+    justify-content: space-between;
+  }
+  .preset-chip {
+    padding: 7px 12px;
+    font-size: 0.82rem;
+  }
+}
