@@ -328,7 +328,7 @@ function updateDrawerJailUI() {
 			badge.style.display = "inline-flex";
 			badge.style.alignItems = "center";
 			badge.style.gap = "4px";
-			badge.innerHTML = `<img src="/src/assets/lock-red.svg" width="12" height="12" alt="" /><span>Jailed</span>`;
+			badge.innerHTML = `<img src="/public/lock-red.svg" width="12" height="12" alt="" /><span>Jailed</span>`;
 			btn.appendChild(badge);
 		} else if (!isJailed && badge) {
 			badge.remove();
