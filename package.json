@@ -1,19 +1,21 @@
 {
-  "name": "fancy-rpg-dice",
-  "version": "0.0.0",
-  "private": true,
-  "type": "module",
-  "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview"
-  },
-  "devDependencies": {
-    "@biomejs/biome": "2.6.3",
-    "vite": "^8.3.4",
-    "vite-plugin-pwa": "^2.0.0"
-  },
-  "dependencies": {
-    "@3d-dice/dice-box-threejs": "^0.0.12"
-  }
+	"name": "fancy-rpg-dice",
+	"version": "0.0.0",
+	"private": true,
+	"type": "module",
+	"scripts": {
+		"dev": "vite",
+		"build": "vite build",
+		"preview": "vite preview",
+		"prepare": "husky"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "2.6.3",
+		"husky": "^9.1.7",
+		"vite": "^8.3.4",
+		"vite-plugin-pwa": "^2.0.0"
+	},
+	"dependencies": {
+		"@3d-dice/dice-box-threejs": "^0.0.12"
+	}
 }
