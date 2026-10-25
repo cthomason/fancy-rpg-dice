@@ -107,9 +107,9 @@ document
 
 backdropEl.addEventListener("click", closeAllDrawers);
 
-// RESTORED: Auto-populate the Left Dice Drawer AND the Preset Modal Dropdown from PROFILES
+// Auto-populate the Left Dice Drawer AND the Preset Modal Dropdown from PROFILES
 const diceListEl = document.getElementById("dice-list");
-const presetThemeSelect = document.getElementById("preset-theme");
+// const presetThemeSelect = document.getElementById("preset-theme");
 
 if (diceListEl) diceListEl.innerHTML = "";
 
