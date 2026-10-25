@@ -186,11 +186,21 @@ const box = new DiceBox("#dice-canvas", {
 	assetPath: "/",
 	theme_customColorset: currentProfile.custom,
 	baseScale: 100,
-	strength: 2,
+	strength: 4.5,
+    // gravity_multiplier: 600,
 	sounds: false,
 });
 
 await box.initialize();
+
+// Enforce a minimum throw velocity so dice NEVER just drop and wobble
+// const originalGenerateVectors = box.generate_vectors.bind(box);
+// box.generate_vectors = (notation, vector, boost) => {
+//   // Guarantee every throw has at least 65% of the screen's max throw distance
+//   const minDist = Math.hypot(box.display.currentWidth, box.display.currentHeight) * 0.65;
+//   const minBoost = 3.5 * minDist * box.strength;
+//   return originalGenerateVectors(notation, vector, Math.max(boost, minBoost));
+// };
 
 // Tap Die Buttons to Increment Pool
 document.querySelectorAll(".die-btn").forEach((btn) => {
