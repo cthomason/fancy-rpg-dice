@@ -123,6 +123,11 @@ for (const [key, profile] of Object.entries(PROFILES)) {
       <span class="swatch-name">${profile.label}</span>
     `;
 	btn.addEventListener("click", () => {
+		if (jailedThemes.has(key)) {
+			// Release from Dice Jail on parole!
+			jailedThemes.delete(key);
+			saveJailState();
+		}
 		applyTheme(key);
 		closeAllDrawers();
 	});
@@ -130,10 +135,10 @@ for (const [key, profile] of Object.entries(PROFILES)) {
 }
 
 // Add option to the New Preset Modal <select>
-const opt = document.createElement("option");
-opt.value = key;
-opt.textContent = `${profile.label} Dice`;
-presetThemeSelect.appendChild(opt);
+// const opt = document.createElement("option");
+// opt.value = key;
+// opt.textContent = `${profile.label} Dice`;
+// presetThemeSelect.appendChild(opt);
 
 // Helper to switch the visual 3D dice theme & update the top-left button
 async function applyTheme(themeKey) {
@@ -291,6 +296,89 @@ document.getElementById("add-preset-btn").addEventListener("click", () => {
 
 document.getElementById("cancel-preset-btn").addEventListener("click", () => {
 	document.getElementById("preset-modal").classList.add("hidden");
+});
+
+// --- DICE JAIL MANAGER ---
+const JAIL_STORAGE_KEY = "fancy_rpg_jailed_dice";
+const jailedThemes = new Set(
+	JSON.parse(localStorage.getItem(JAIL_STORAGE_KEY)) || [],
+);
+
+function saveJailState() {
+	localStorage.setItem(JAIL_STORAGE_KEY, JSON.stringify([...jailedThemes]));
+	updateDrawerJailUI();
+}
+
+function updateDrawerJailUI() {
+	document.querySelectorAll(".swatch-item").forEach((btn) => {
+		const key = btn.dataset.theme;
+		const isJailed = jailedThemes.has(key);
+		btn.classList.toggle("jailed", isJailed);
+
+		// Show "Parole All" button only when at least 1 dice set is jailed
+		const paroleAllBtn = document.getElementById("parole-all-btn");
+		if (paroleAllBtn) {
+			paroleAllBtn.classList.toggle("hidden", jailedThemes.size === 0);
+		}
+
+		let badge = btn.querySelector(".jail-badge");
+		if (isJailed && !badge) {
+			badge = document.createElement("span");
+			badge.className = "jail-badge";
+			badge.style.display = "inline-flex";
+			badge.style.alignItems = "center";
+			badge.style.gap = "4px";
+			badge.innerHTML = `<img src="/src/assets/lock-red.svg" width="12" height="12" alt="" /><span>Jailed</span>`;
+			btn.appendChild(badge);
+		} else if (!isJailed && badge) {
+			badge.remove();
+		}
+	});
+}
+
+document.getElementById("jail-dice-btn").addEventListener("click", () => {
+	// Find which theme key is currently active
+	const currentKey =
+		Object.keys(PROFILES).find((k) => PROFILES[k] === currentProfile) ||
+		"crimson";
+	const allKeys = Object.keys(PROFILES);
+
+	// Make sure at least 1 dice set remains free!
+	if (jailedThemes.size >= allKeys.length - 1) {
+		alert("You can't jail your last remaining set of dice!");
+		return;
+	}
+
+	// Hide the result banner & trigger the Iron Bars Slam animation!
+	document.getElementById("result-banner").classList.add("hidden");
+	const overlay = document.getElementById("jail-overlay");
+	overlay.classList.remove("hidden", "slam");
+	void overlay.offsetWidth; // Force browser reflow so animation restarts cleanly
+	overlay.classList.add("slam");
+
+	// Lock the current dice set in Dice Jail
+	jailedThemes.add(currentKey);
+	saveJailState();
+
+	// Pick the next non-jailed dice set automatically
+	const nextFreeKey = allKeys.find((k) => !jailedThemes.has(k)) || "crimson";
+
+	// Halfway through the slam, clear the 3D dice and switch to the new set
+	setTimeout(() => {
+		box.clearDice();
+		applyTheme(nextFreeKey);
+	}, 600);
+
+	// Hide the overlay when the animation finishes
+	setTimeout(() => {
+		overlay.classList.remove("slam");
+		overlay.classList.add("hidden");
+	}, 1450);
+});
+
+document.getElementById("parole-all-btn")?.addEventListener("click", () => {
+	jailedThemes.clear();
+	saveJailState();
 });
 
 // Render presets on startup

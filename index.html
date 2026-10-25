@@ -12,13 +12,13 @@
 
   <!-- Top bar theme switcher and clear button -->
     <header class="hud-top">
-      <button id="dice-drawer-btn" class="hud-btn-secondary dice-bag-btn">
+      <button type="button" id="dice-drawer-btn" class="hud-btn-secondary dice-bag-btn">
         <span id="active-dice-dot" class="swatch-dot" style="background: #991b1b;"></span>
         <span id="active-dice-name">Crimson</span>
       </button>
 
       <div style="display: flex; gap: 8px; align-items: center;">
-        <button id="presets-drawer-btn" class="hud-btn-secondary dice-bag-btn">Presets</button>
+        <button type="button" id="presets-drawer-btn" class="hud-btn-secondary dice-bag-btn">Presets</button>
       </div>
     </header>
 
@@ -29,19 +29,23 @@
     <aside id="dice-drawer" class="dice-drawer">
       <div class="drawer-header">
         <h2>Dice Bag</h2>
-        <button id="close-drawer-btn" class="icon-btn">&times;</button>
+        <button type="button" id="close-drawer-btn" class="icon-btn">&times;</button>
       </div>
       <div id="dice-list" class="dice-list"></div>
+      <button type="button" id="parole-all-btn" class="parole-all-btn hidden">
+  <img src="src/assets/unlock-red.svg" width="14" height="14" alt="" />
+  <span>Parole All Dice</span>
+</button>
     </aside>
 
     <!-- Right Slide-Out Presets Drawer -->
     <aside id="presets-drawer" class="presets-drawer">
       <div class="drawer-header">
         <h2>Saved Rolls</h2>
-        <button id="close-presets-btn" class="icon-btn">&times;</button>
+        <button type="button" id="close-presets-btn" class="icon-btn">&times;</button>
       </div>
 
-      <button id="add-preset-btn" class="preset-add-btn">+ New Preset</button>
+      <button type="button" id="add-preset-btn" class="preset-add-btn">+ New Preset</button>
       <div id="presets-list" class="presets-list"></div>
     </aside>
 
@@ -49,6 +53,16 @@
   <div id="result-banner" class="hud-result hidden">
     <div id="result-total">20</div>
     <div id="result-breakdown">d20: 20</div>
+    <button type="button" id="jail-dice-btn" class="jail-btn" title="Banish this dice set to Dice Jail!" style="display: inline-flex; align-items: center; gap: 6px;">
+      <img src="src/assets/lock-red.svg" width="14" height="14" alt="" />
+      <span>Jail These Dice</span>
+    </button>
+  </div>
+
+  <!-- Full-Screen Iron Bars Animation Overlay -->
+  <div id="jail-overlay" class="jail-overlay hidden">
+    <div class="jail-bars"></div>
+    <div class="jail-stamp">DICE JAILED!</div>
   </div>
 
   <!-- Simple Pop-up Modal to Create a New Preset -->
@@ -64,8 +78,8 @@
       </select>
 
       <div class="modal-actions">
-        <button id="cancel-preset-btn" class="hud-btn-secondary">Cancel</button>
-        <button id="save-preset-btn" class="roll-action-btn" style="height: 42px; font-size: 0.95rem;">Save</button>
+        <button type="button" id="cancel-preset-btn" class="hud-btn-secondary">Cancel</button>
+        <button type="button" id="save-preset-btn" class="roll-action-btn" style="height: 42px; font-size: 0.95rem;">Save</button>
       </div>
     </div>
   </div>
@@ -75,23 +89,19 @@
   <footer class="hud-bottom">
     <div class="dice-dock">
       <!-- The hidden zero is the counter for how many dice to roll -->
-      <button class="die-btn" data-sides="4">d4<span class="badge hidden">0</span></button>
-      <button class="die-btn" data-sides="6">d6<span class="badge hidden">0</span></button>
-      <button class="die-btn" data-sides="8">d8<span class="badge hidden">0</span></button>
-      <button class="die-btn" data-sides="10">d10<span class="badge hidden">0</span></button>
-      <button class="die-btn" data-sides="12">d12<span class="badge hidden">0</span></button>
-      <button class="die-btn" data-sides="20">d20<span class="badge hidden">0</span></button>
-      <button class="die-btn" data-sides="100">d100<span class="badge hidden">0</span></button>
+      <button type="button" class="die-btn" data-sides="4">d4<span class="badge hidden">0</span></button>
+      <button type="button" class="die-btn" data-sides="6">d6<span class="badge hidden">0</span></button>
+      <button type="button" class="die-btn" data-sides="8">d8<span class="badge hidden">0</span></button>
+      <button type="button" class="die-btn" data-sides="10">d10<span class="badge hidden">0</span></button>
+      <button type="button" class="die-btn" data-sides="12">d12<span class="badge hidden">0</span></button>
+      <button type="button" class="die-btn" data-sides="20">d20<span class="badge hidden">0</span></button>
+      <button type="button" class="die-btn" data-sides="100">d100<span class="badge hidden">0</span></button>
     </div>
-    <button id="roll-btn" class="roll-action-btn">ROLL</button>
-    <button id="clear-btn" class="clear-action-btn" style="display: flex; align-items: center; gap: 6px;">
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M3 6h18"></path>
-    <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
-    <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
-  </svg>
+    <button type="button" id="roll-btn" class="roll-action-btn">ROLL</button>
+    <button type="button" id="clear-btn" class="clear-action-btn" style="display: flex; align-items: center; gap: 6px;">
+    <img src="src/assets/trash-can-white.svg" width="20" height="20" alt="" />
   <span>Clear</span>
 </button>
   </footer>
-</div>
+
 <script type="module" src="/src/main.js"></script> 

@@ -1,23 +1,29 @@
-* { box-sizing: border-box; user-select: none; -webkit-user-select: none; }
+* {
+	box-sizing: border-box;
+	user-select: none;
+	-webkit-user-select: none;
+}
 
-html, body {
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  background: #94a3b8; /* Matches outer edge of gradient so it's never blank white */
+html,
+body {
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+	background: #94a3b8; /* Matches outer edge of gradient so it's never blank white */
 }
 
 #app {
-  position: fixed; /* Strictly locks the app to the exact iPad window size */
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  touch-action: none;
-  background: radial-gradient(circle at center, #e2e8f0 0%, #94a3b8 100%);
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+	position: fixed; /* Strictly locks the app to the exact iPad window size */
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+	touch-action: none;
+	background: radial-gradient(circle at center, #e2e8f0 0%, #94a3b8 100%);
+	font-family:
+		-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 
 /* 3D Dice Layer (Bounded between the top bar and bottom presets/dock) */
@@ -44,8 +50,13 @@ html, body {
 	z-index: 10;
 	pointer-events: none; /* Let taps pass through empty space to the canvas */
 }
-.hud-top *,
+/* .hud-top *,
 .hud-bottom * {
+	pointer-events: auto;
+} */
+.hud-top *,
+.hud-bottom *,
+.hud-result * {
 	pointer-events: auto;
 }
 
@@ -91,20 +102,32 @@ html, body {
 
 /* Narrow Single-Column Left Drawer */
 .dice-drawer {
-  position: absolute; top: 0; left: 0; bottom: 0;
-  width: 220px; max-width: 75vw; z-index: 30;
-  background: rgba(24, 26, 32, 0.94);
-  backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
-  border-right: 1px solid rgba(255, 255, 255, 0.12);
-  padding: calc(env(safe-area-inset-top, 20px) + 10px) 14px calc(env(safe-area-inset-bottom, 20px) + 10px);
-  display: flex; flex-direction: column; gap: 14px; color: #fff;
-  transform: translateX(-100%);
-  visibility: hidden; /* Prevents iPadOS from counting off-screen drawer in layout */
-  transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), visibility 0.25s;
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	width: 220px;
+	max-width: 75vw;
+	z-index: 30;
+	background: rgba(24, 26, 32, 0.94);
+	backdrop-filter: blur(16px);
+	-webkit-backdrop-filter: blur(16px);
+	border-right: 1px solid rgba(255, 255, 255, 0.12);
+	padding: calc(env(safe-area-inset-top, 20px) + 10px) 14px
+		calc(env(safe-area-inset-bottom, 20px) + 10px);
+	display: flex;
+	flex-direction: column;
+	gap: 14px;
+	color: #fff;
+	transform: translateX(-100%);
+	visibility: hidden; /* Prevents iPadOS from counting off-screen drawer in layout */
+	transition:
+		transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1),
+		visibility 0.25s;
 }
 .dice-drawer.open {
-  transform: translateX(0);
-  visibility: visible;
+	transform: translateX(0);
+	visibility: visible;
 }
 
 .drawer-header {
@@ -306,20 +329,32 @@ html, body {
 
 /* Right Slide-Out Presets Drawer */
 .presets-drawer {
-  position: absolute; top: 0; right: 0; bottom: 0;
-  width: 280px; max-width: 82vw; z-index: 30;
-  background: rgba(24, 26, 32, 0.94);
-  backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
-  border-left: 1px solid rgba(255, 255, 255, 0.12);
-  padding: calc(env(safe-area-inset-top, 20px) + 10px) 14px calc(env(safe-area-inset-bottom, 20px) + 10px);
-  display: flex; flex-direction: column; gap: 12px; color: #fff;
-  transform: translateX(100%);
-  visibility: hidden; /* Prevents iPadOS from expanding the right edge of the window! */
-  transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), visibility 0.25s;
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	width: 280px;
+	max-width: 82vw;
+	z-index: 30;
+	background: rgba(24, 26, 32, 0.94);
+	backdrop-filter: blur(16px);
+	-webkit-backdrop-filter: blur(16px);
+	border-left: 1px solid rgba(255, 255, 255, 0.12);
+	padding: calc(env(safe-area-inset-top, 20px) + 10px) 14px
+		calc(env(safe-area-inset-bottom, 20px) + 10px);
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+	color: #fff;
+	transform: translateX(100%);
+	visibility: hidden; /* Prevents iPadOS from expanding the right edge of the window! */
+	transition:
+		transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1),
+		visibility 0.25s;
 }
 .presets-drawer.open {
-  transform: translateX(0);
-  visibility: visible;
+	transform: translateX(0);
+	visibility: visible;
 }
 
 .preset-add-btn {
@@ -457,6 +492,190 @@ html, body {
 	justify-content: flex-end;
 	gap: 10px;
 	margin-top: 6px;
+}
+
+/* "Jail These Dice" Button inside the Result Banner */
+.jail-btn {
+	margin-top: 10px;
+	padding: 6px 14px;
+	border-radius: 12px;
+	background: rgba(239, 68, 68, 0.2);
+	border: 1px solid rgba(239, 68, 68, 0.5);
+	color: #fca5a5;
+	font-size: 0.8rem;
+	font-weight: 700;
+	cursor: pointer;
+	pointer-events: auto; /* Clickable inside .hud-result! */
+	transition:
+		transform 0.1s,
+		background 0.15s;
+}
+.jail-btn:active {
+	transform: scale(0.94);
+	background: rgba(239, 68, 68, 0.45);
+}
+
+/* Full-Screen Iron Bars Slamming Overlay */
+.jail-overlay {
+	position: absolute;
+	inset: 0;
+	z-index: 45;
+	pointer-events: none;
+	overflow: hidden;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: rgba(0, 0, 0, 0.35);
+}
+.jail-overlay.hidden {
+	display: none;
+}
+
+/* Vertical Steel Prison Bars using repeating-linear-gradient */
+.jail-bars {
+	position: absolute;
+	inset: 0;
+	background:
+    /* Horizontal crossbar near the middle */
+		linear-gradient(
+			to bottom,
+			transparent 46%,
+			#27272a 46%,
+			#52525b 48%,
+			#18181b 50%,
+			transparent 50%
+		),
+		/* Vertical iron bars every 64px */
+		repeating-linear-gradient(
+			to right,
+			transparent 0px,
+			transparent 48px,
+			#18181b 48px,
+			#71717a 54px,
+			#27272a 60px,
+			transparent 60px
+		);
+	transform: translateY(-100%);
+}
+
+.jail-overlay.slam .jail-bars {
+	animation: slamBarsDown 1.45s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* Red "DICE JAILED!" Stamp */
+.jail-stamp {
+	position: relative;
+	z-index: 2;
+	padding: 12px 28px;
+	border: 5px solid #ef4444;
+	border-radius: 12px;
+	color: #ef4444;
+	background: rgba(20, 22, 26, 0.9);
+	font-size: 2.2rem;
+	font-weight: 900;
+	letter-spacing: 3px;
+	text-transform: uppercase;
+	box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+	opacity: 0;
+	transform: scale(2.5) rotate(-8deg);
+}
+
+.jail-overlay.slam .jail-stamp {
+	animation: stampSlam 1.45s ease forwards;
+}
+
+@keyframes slamBarsDown {
+	0% {
+		transform: translateY(-100%);
+	}
+	18% {
+		transform: translateY(0%);
+	}
+	22% {
+		transform: translateY(-3%) translateX(-4px);
+	} /* Impact bounce & shake */
+	26% {
+		transform: translateY(0%) translateX(4px);
+	}
+	30% {
+		transform: translateY(0%) translateX(0);
+	}
+	80% {
+		transform: translateY(0%);
+		opacity: 1;
+	}
+	100% {
+		transform: translateY(-100%);
+		opacity: 0;
+	}
+}
+
+@keyframes stampSlam {
+	0%,
+	18% {
+		opacity: 0;
+		transform: scale(2.5) rotate(-8deg);
+	}
+	25% {
+		opacity: 1;
+		transform: scale(1) rotate(-8deg);
+	}
+	80% {
+		opacity: 1;
+		transform: scale(1) rotate(-8deg);
+	}
+	100% {
+		opacity: 0;
+		transform: scale(0.8) rotate(-8deg);
+	}
+}
+
+/* Jailed State Inside the Left Dice Bag Drawer */
+.swatch-item.jailed {
+	opacity: 0.55;
+	position: relative;
+	overflow: hidden;
+	border-color: rgba(239, 68, 68, 0.4);
+	background: repeating-linear-gradient(
+		90deg,
+		rgba(255, 255, 255, 0.03) 0px,
+		rgba(255, 255, 255, 0.03) 10px,
+		rgba(0, 0, 0, 0.45) 10px,
+		rgba(0, 0, 0, 0.45) 14px
+	);
+}
+.jail-badge {
+	margin-left: auto;
+	font-size: 0.75rem;
+	color: #f87171;
+	font-weight: 700;
+}
+
+/* "Parole All Dice" Button inside the Left Dice Drawer */
+.parole-all-btn {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 8px;
+	width: 100%;
+	padding: 9px 12px;
+	border-radius: 12px;
+	background: rgba(239, 68, 68, 0.18);
+	border: 1px solid rgba(239, 68, 68, 0.45);
+	color: #fca5a5;
+	font-size: 0.85rem;
+	font-weight: 700;
+	cursor: pointer;
+	transition:
+		transform 0.1s,
+		background 0.15s;
+}
+.parole-all-btn:active {
+	transform: scale(0.97);
+	background: rgba(239, 68, 68, 0.35);
+}
+.parole-all-btn.hidden {
+	display: none;
 }
 
 /* =========================================================
